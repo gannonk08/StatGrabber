@@ -1,8 +1,8 @@
-# Your Name
+# Kristjan Gannon
 
-[Pivotal Tracker Link](#)
+[Pivotal Tracker Link](https://www.pivotaltracker.com/n/projects/1912999)
 
-### First Project Proposal Idea
+### StatGrabber Proposal
 
 StatGrabber will scrape statistics off of a sports website and format it into an API end point.
 
