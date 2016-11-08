@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for stack project
+# Scrapy settings for stat_grabber project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,34 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'stack'
+BOT_NAME = 'stat_grabber'
 
-SPIDER_MODULES = ['stack.spiders']
-NEWSPIDER_MODULE = 'stack.spiders'
+SPIDER_MODULES = ['stat_grabber.spiders']
+NEWSPIDER_MODULE = 'stat_grabber.spiders'
+
+DATABASE = {
+    'drivername': 'postgres',
+    'host': 'localhost',
+    'port': '5432',
+    'username': 'Gannon',
+    'password': '',
+    'database': 'stat_grabber'
+}
+
+ITEM_PIPELINES = {
+  'stat_grabber.pipelines.StatGrabberPipeline': 300
+}
+
+DOWNLOAD_DELAY = 5
+
+DOWNLOADER_MIDDLEWARES = {'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,}
+
+RETRY_TIMES = 2
+RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 403, 404, 408]
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'stack (+http://www.yourdomain.com)'
+#USER_AGENT = 'stat_grabber (+http://www.yourdomain.com)'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS=32
@@ -44,13 +64,13 @@ NEWSPIDER_MODULE = 'stack.spiders'
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'stack.middlewares.MyCustomSpiderMiddleware': 543,
+#    'stat_grabber.middlewares.MyCustomSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'stack.middlewares.MyCustomDownloaderMiddleware': 543,
+#    'stat_grabber.middlewares.MyCustomDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -62,7 +82,7 @@ NEWSPIDER_MODULE = 'stack.spiders'
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    'stack.pipelines.SomePipeline': 300,
+#    'stat_grabber.pipelines.SomePipeline': 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
