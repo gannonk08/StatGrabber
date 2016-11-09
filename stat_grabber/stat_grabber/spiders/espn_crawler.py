@@ -5,13 +5,18 @@ from scrapy.spiders import CrawlSpider, Rule
 
 from stat_grabber.items import *
 import logging
+import re
+
+requestedDomain = 'http://www.espn.com/nfl/game?gameId=400874607'
 
 
 
 class EspnCrawlerSpider(CrawlSpider):
+
     name = 'espn_crawler'
     allowed_domains = ['espn.com']
-    start_urls = ['http://www.espn.com/nfl/game?gameId=400874607']
+    start_urls = [requestedDomain]
+
 
     rules = (
         Rule(LinkExtractor(), callback='parse_item', follow=False),
@@ -21,10 +26,29 @@ class EspnCrawlerSpider(CrawlSpider):
         scores = response.xpath('//*[@id="linescore"]/tbody/tr/td/text()')
 
         i = 0
+
         homeIndex = 1
+        homeItem = homeTeamItem()
+
         awayIndex = 1
         awayItem = awayTeamItem()
-        homeItem = homeTeamItem()
+
+        requestItem = requestURLItem()
+        requestItem['url'] = requestedDomain
+
+        sportTypeMatch = re.search(r"(?<=espn.com)(.*)(?=game[?])",requestedDomain)
+        if sportTypeMatch:
+            awayItem['sportType'] = sportTypeMatch.groups()[0].replace("/","")
+            homeItem['sportType'] = sportTypeMatch.groups()[0].replace("/","")
+
+        gameIdMatch = re.search(r"(?<=gameId=)(.*)",requestedDomain)
+        if gameIdMatch:
+            awayItem['gameId'] = gameIdMatch.groups()[0]
+            homeItem['gameId'] = gameIdMatch.groups()[0]
+
+
+
+
 
         for score in scores:
             if i <= 5:
